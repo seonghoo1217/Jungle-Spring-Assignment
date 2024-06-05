@@ -5,28 +5,24 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-import java.util.UUID;
-
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "article")
+@Table(name = "comment")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Article {
+public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private UUID uuid;
+    @Column(nullable = false, length = 1000)
+    private String contents;
 
-    private ArticleEssential articleEssential;
+    private LocalDateTime postDateTime;
 
     @ManyToOne
-    @JoinColumn(name = "member_id")
-    private Member member;
-
-    @OneToMany(mappedBy = "article",cascade = CascadeType.ALL)
-    private List<Comment> comments;
+    @JoinColumn(name = "post_id")
+    private Article article;
 }
