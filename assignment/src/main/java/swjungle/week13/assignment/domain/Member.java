@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -26,6 +27,6 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private MemberAuth memberAuth;
 
-    @OneToMany(mappedBy = "member")
-    private List<Member> members;
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Article> articles = new ArrayList<>();
 }
