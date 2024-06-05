@@ -1,5 +1,13 @@
+buildscript {
+    ext {
+        queryDslVersion = "5.0.0"
+        snippetsDir = file('build/generated-snippets')
+    }
+}
+
 plugins {
     id 'java'
+    id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
     id 'org.springframework.boot' version '3.3.0'
     id 'io.spring.dependency-management' version '1.1.5'
 }
@@ -32,27 +40,31 @@ dependencies {
     runtimeOnly 'com.mysql:mysql-connector-j'
 
     //querydsl
-    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
-    annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
+    implementation 'com.querydsl:querydsl-jpa'
+
+    implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+    implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
 }
 
 tasks.named('test') {
     useJUnitPlatform()
 }
 
-def generated = 'src/main/generated'
+def querydslDir = "$buildDir/generated/querydsl"
 
-///// querydsl QClass 파일 생성 위치를 지정
-tasks.withType(JavaCompile) {
-    options.getGeneratedSourceOutputDirectory().set(file(generated))
+querydsl {
+    jpa = true
+    querydslSourcesDir = querydslDir
 }
-
-///// java source set 에 querydsl QClass 위치 추가
 sourceSets {
-    main.java.srcDirs += [ generated ]
+    main.java.srcDir querydslDir
 }
-
-///// gradle clean 시에 QClass 디렉토리 삭제
-clean {
-    delete file(generated)
+compileQuerydsl {
+    options.annotationProcessorPath = configurations.querydsl
+}
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    querydsl.extendsFrom compileClasspath
 }
