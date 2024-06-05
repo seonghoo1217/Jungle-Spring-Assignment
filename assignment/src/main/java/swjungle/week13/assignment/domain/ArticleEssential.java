@@ -13,10 +13,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Embeddable
 public class ArticleEssential {
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false)
     private String title;
 
-    @Column(length = 1000)
+    @Column(columnDefinition = "TEXT")
     private String contents;
 
     private LocalDateTime postDateTime;
