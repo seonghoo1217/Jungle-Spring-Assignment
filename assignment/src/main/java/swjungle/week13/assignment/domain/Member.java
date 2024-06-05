@@ -5,6 +5,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Table(name = "members")
 @Getter
@@ -23,4 +25,7 @@ public class Member {
 
     @Enumerated(EnumType.STRING)
     private MemberAuth memberAuth;
+
+    @OneToMany(mappedBy = "member")
+    private List<Member> members;
 }
