@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -18,5 +19,5 @@ public class ArticleEssential {
     @Column(length = 1000)
     private String contents;
 
-    private LocalDate postDate;
+    private LocalDateTime postDateTime;
 }
