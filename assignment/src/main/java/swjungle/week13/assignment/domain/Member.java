@@ -18,10 +18,10 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false,unique = true,length = 10)
+    @Column(nullable = false, unique = true, length = 10)
     private String username;
 
-    @Column(nullable = false,length = 15)
+    @Column(nullable = false, length = 15)
     private String password;
 
     @Enumerated(EnumType.STRING)
@@ -32,4 +32,6 @@ public class Member {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
+
+    private String refreshToken;
 }
