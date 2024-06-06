@@ -26,7 +26,7 @@ public class SecurityConfig {
     private final CustomUserDetailService customUserDetailService;
 
     private static final String[] AUTHENTICATE_WHITELIST = {
-            "/members/signup", "members/signin"
+            "/members/signup", "members/signin", "/ping"
     };
 
     @Bean
@@ -43,7 +43,6 @@ public class SecurityConfig {
                     .requestMatchers(AUTHENTICATE_WHITELIST).permitAll()
                     .anyRequest().authenticated();
         });
-
         http.addFilterBefore(new JwtAuthFilter(customUserDetailService, jwtUtil), UsernamePasswordAuthenticationFilter.class);
         http.exceptionHandling(exceptionHandle -> {
             exceptionHandle.accessDeniedHandler(jwtAccessDeniedHandler);

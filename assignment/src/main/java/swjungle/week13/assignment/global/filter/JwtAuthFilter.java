@@ -13,6 +13,7 @@ import swjungle.week13.assignment.global.application.CustomUserDetailService;
 import swjungle.week13.assignment.global.application.JwtUtil;
 
 import java.io.IOException;
+import java.util.List;
 
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
@@ -21,8 +22,17 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
 
+    private static final List<String> AUTHENTICATE_WHITELIST = List.of(
+            "/members/signup", "members/signin", "/ping"
+    );
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        System.out.println("REQUEST-URI:" + request.getRequestURI());
+        if (AUTHENTICATE_WHITELIST.contains(request.getRequestURI())) {
+            filterChain.doFilter(request, response);
+            return;
+        }
         String authorization = request.getHeader("Authorization");
 
         if (authorization != null && authorization.startsWith("Bearer ")) {
