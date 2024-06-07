@@ -27,15 +27,11 @@ public class JwtUtil {
         return createToken(member, jwtProvider.getRefresh_expiration());
     }
 
-    /*public String reissue(String refreshToken){
-
-    }*/
-
     public String getClaimUsername(String token) {
         return getDecodeJwt(token).getClaim("username").asString();
     }
 
-    public String createToken(Member member, long expireTime) {
+    private String createToken(Member member, long expireTime) {
         return JWT.create()
                 .withSubject(member.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + expireTime))
