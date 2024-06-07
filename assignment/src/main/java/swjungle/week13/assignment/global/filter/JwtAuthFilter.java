@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 import swjungle.week13.assignment.global.application.CustomUserDetailService;
 import swjungle.week13.assignment.global.application.JwtUtil;
+import swjungle.week13.assignment.global.application.dto.ReissueToken;
 
 import java.io.IOException;
 import java.util.List;
@@ -34,7 +35,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             return;
         }
         String authorization = request.getHeader("Authorization");
-
+        String authorizationRefresh = request.getHeader("Authorization_Refresh");
+        if (authorizationRefresh != null) {
+            ReissueToken reissueToken = jwtUtil.reissue(authorizationRefresh);
+            response.setHeader("Authorization", reissueToken.accessToken());
+            response.setHeader("Authorization_Refresh", reissueToken.refreshToken());
+        }
         if (authorization != null && authorization.startsWith("Bearer ")) {
             String accessToken = eliminatePrefixBearer(authorization);
 

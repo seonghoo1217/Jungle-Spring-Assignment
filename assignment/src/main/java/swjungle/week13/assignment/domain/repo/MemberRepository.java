@@ -10,4 +10,6 @@ public interface MemberRepository extends Repository<Member, Long>, MemberDslRep
     Optional<Member> findByUsername(String username);
 
     Member save(Member member);
+
+    Optional<Member> findByRefreshToken(String refreshToken);
 }

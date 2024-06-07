@@ -6,7 +6,9 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import swjungle.week13.assignment.domain.Member;
+import swjungle.week13.assignment.domain.exception.MemberNotFoundException;
 import swjungle.week13.assignment.domain.repo.MemberRepository;
+import swjungle.week13.assignment.global.application.dto.ReissueToken;
 import swjungle.week13.assignment.global.dto.JwtProvider;
 
 import java.util.Date;
@@ -25,6 +27,15 @@ public class JwtUtil {
 
     public String createRefreshToken(Member member) {
         return createToken(member, jwtProvider.getRefresh_expiration());
+    }
+
+    public ReissueToken reissue(String refreshToken) {
+        Member member = memberRepository.findByRefreshToken(refreshToken).orElseThrow(MemberNotFoundException::new);
+
+        String reissueAccessToken = createAccessToken(member);
+        String reissueRefreshToken = createRefreshToken(member);
+        member.updateRefreshToken(reissueRefreshToken);
+        return new ReissueToken(reissueAccessToken, reissueRefreshToken);
     }
 
     public String getClaimUsername(String token) {
