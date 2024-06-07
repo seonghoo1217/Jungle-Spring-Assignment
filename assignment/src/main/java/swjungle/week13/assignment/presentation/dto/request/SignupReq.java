@@ -4,5 +4,5 @@ import jakarta.validation.constraints.NotBlank;
 import swjungle.week13.assignment.global.annotation.PasswordPattern;
 import swjungle.week13.assignment.global.annotation.UsernamePattern;
 
-public record MemberCreateReq(@UsernamePattern @NotBlank String username, @PasswordPattern @NotBlank String password) {
+public record SignupReq(@UsernamePattern @NotBlank String username, @PasswordPattern @NotBlank String password) {
 }

@@ -9,7 +9,6 @@ import swjungle.week13.assignment.domain.Member;
 import swjungle.week13.assignment.domain.MemberAuth;
 import swjungle.week13.assignment.domain.exception.UsernameExistException;
 import swjungle.week13.assignment.domain.repo.MemberRepository;
-import swjungle.week13.assignment.global.application.JwtUtil;
 
 @Service
 @Transactional
@@ -17,7 +16,6 @@ import swjungle.week13.assignment.global.application.JwtUtil;
 public class MemberCommandServiceImpl implements MemberCommandService {
     private final MemberRepository memberRepository;
 
-    private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
 
     @Override
