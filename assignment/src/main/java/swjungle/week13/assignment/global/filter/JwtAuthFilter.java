@@ -23,7 +23,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
 
     private static final List<String> AUTHENTICATE_WHITELIST = List.of(
-            "/members/signup", "members/signin", "/ping"
+            "/members/signup", "/members/signin", "/ping"
     );
 
     @Override
