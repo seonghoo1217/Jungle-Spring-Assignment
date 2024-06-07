@@ -23,7 +23,7 @@ public class JwtUtil {
         return createToken(member, jwtProvider.getAccess_expiration());
     }
 
-    public String refreshAccessToken(Member member) {
+    public String createRefreshToken(Member member) {
         return createToken(member, jwtProvider.getRefresh_expiration());
     }
 

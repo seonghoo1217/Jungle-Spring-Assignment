@@ -41,4 +41,8 @@ public class Member {
         this.password = password;
         this.memberAuth = memberAuth;
     }
+
+    public void updateRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
 }
