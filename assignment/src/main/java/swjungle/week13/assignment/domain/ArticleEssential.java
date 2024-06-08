@@ -6,7 +6,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -20,4 +19,10 @@ public class ArticleEssential {
     private String contents;
 
     private LocalDateTime postDateTime;
+
+    public ArticleEssential(String title, String contents, LocalDateTime postDateTime) {
+        this.title = title;
+        this.contents = contents;
+        this.postDateTime = postDateTime;
+    }
 }
