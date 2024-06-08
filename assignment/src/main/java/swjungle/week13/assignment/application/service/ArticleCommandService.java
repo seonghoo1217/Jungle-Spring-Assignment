@@ -8,7 +8,7 @@ import java.util.UUID;
 public interface ArticleCommandService {
     Article createArticle(String title, String contents, String username);
 
-    ArticleDetailRes modifyArticleEssential(UUID uuid, String title, String contents);
+    ArticleDetailRes modifyArticleEssential(String authorization, UUID uuid, String title, String contents);
 
-    void deleteArticle(UUID uuid);
+    void deleteArticle(String authorization, UUID uuid);
 }

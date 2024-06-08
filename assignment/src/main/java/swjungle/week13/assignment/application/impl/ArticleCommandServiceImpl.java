@@ -8,9 +8,11 @@ import swjungle.week13.assignment.domain.Article;
 import swjungle.week13.assignment.domain.ArticleEssential;
 import swjungle.week13.assignment.domain.Member;
 import swjungle.week13.assignment.domain.exception.ArticleNotFoundException;
+import swjungle.week13.assignment.domain.exception.ArticleNotOwnerException;
 import swjungle.week13.assignment.domain.exception.MemberNotFoundException;
 import swjungle.week13.assignment.domain.repo.ArticleRepository;
 import swjungle.week13.assignment.domain.repo.MemberRepository;
+import swjungle.week13.assignment.global.application.JwtUtil;
 import swjungle.week13.assignment.presentation.dto.response.ArticleDetailRes;
 
 import java.time.LocalDateTime;
@@ -23,6 +25,7 @@ public class ArticleCommandServiceImpl implements ArticleCommandService {
 
     private final ArticleRepository articleRepository;
     private final MemberRepository memberRepository;
+    private final JwtUtil jwtUtil;
 
     @Override
     public Article createArticle(String title, String contents, String username) {
@@ -33,15 +36,21 @@ public class ArticleCommandServiceImpl implements ArticleCommandService {
     }
 
     @Override
-    public ArticleDetailRes modifyArticleEssential(UUID uuid, String title, String contents) {
+    public ArticleDetailRes modifyArticleEssential(String authorization, UUID uuid, String title, String contents) {
         Article article = articleRepository.findByUuid(uuid).orElseThrow(ArticleNotFoundException::new);
+        if (!jwtUtil.isOwner(authorization, article.getMember().getId())) {
+            throw new ArticleNotOwnerException();
+        }
         article.modifyArticleEssential(title, contents);
         return new ArticleDetailRes(article);
     }
 
     @Override
-    public void deleteArticle(UUID uuid) {
+    public void deleteArticle(String authorization, UUID uuid) {
         Article article = articleRepository.findByUuid(uuid).orElseThrow(ArticleNotFoundException::new);
+        if (!jwtUtil.isOwner(authorization, article.getMember().getId())) {
+            throw new ArticleNotOwnerException();
+        }
         articleRepository.delete(article);
     }
 }

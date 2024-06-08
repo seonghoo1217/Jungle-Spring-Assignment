@@ -1,5 +1,6 @@
 package swjungle.week13.assignment.presentation;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -45,16 +46,19 @@ public class ArticleController {
     }
 
     @PatchMapping
-    public ResponseEnvelope<?> modifyArticleEssential(@RequestBody ModifyArticleReq modifyArticleReq) {
-        ArticleDetailRes article = articleCommandService.modifyArticleEssential(modifyArticleReq.uuid(),
+    public ResponseEnvelope<?> modifyArticleEssential(@RequestBody ModifyArticleReq modifyArticleReq, HttpServletRequest httpServletRequest) {
+        String authorization = httpServletRequest.getHeader("Authorization");
+        ArticleDetailRes article = articleCommandService.modifyArticleEssential(authorization, modifyArticleReq.uuid(),
                 modifyArticleReq.title(), modifyArticleReq.contents());
 
         return ResponseEnvelope.of(article);
     }
 
     @DeleteMapping("{uuid}")
-    public ResponseEnvelope<?> deleteArticle(@PathVariable("uuid") UUID uuid) {
-        articleCommandService.deleteArticle(uuid);
+    public ResponseEnvelope<?> deleteArticle(@PathVariable("uuid") UUID uuid, HttpServletRequest httpServletRequest) {
+        String authorization = httpServletRequest.getHeader("Authorization");
+
+        articleCommandService.deleteArticle(authorization, uuid);
 
         return ResponseEnvelope.of("");
     }

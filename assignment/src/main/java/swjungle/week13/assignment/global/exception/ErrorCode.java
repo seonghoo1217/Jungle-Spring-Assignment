@@ -6,10 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import swjungle.week13.assignment.domain.exception.ArticleNotFoundException;
-import swjungle.week13.assignment.domain.exception.MemberNotFoundException;
-import swjungle.week13.assignment.domain.exception.PasswordNotMatchException;
-import swjungle.week13.assignment.domain.exception.UsernameExistException;
+import swjungle.week13.assignment.domain.exception.*;
 
 import java.util.Set;
 
@@ -24,7 +21,8 @@ public enum ErrorCode {
     USERNAME_EXIST(HttpStatus.BAD_REQUEST, "중복된 username 입니다.", Set.of(UsernameExistException.class)),
     NOTFOUND_MEMBER(HttpStatus.BAD_REQUEST, "회원을 찾지 못하였습니다.", Set.of(MemberNotFoundException.class)),
     PASSWORD_NOT_MATCH(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다.", Set.of(PasswordNotMatchException.class)),
-    NOTFOUND_ARTICLE(HttpStatus.BAD_REQUEST, "게시물을 찾지 못하였습니다.", Set.of(ArticleNotFoundException.class));
+    NOTFOUND_ARTICLE(HttpStatus.BAD_REQUEST, "게시물을 찾지 못하였습니다.", Set.of(ArticleNotFoundException.class)),
+    NOT_OWNER_ARTICLE(HttpStatus.BAD_REQUEST, "작성자만 삭제/수정할 수 있습니다.", Set.of(ArticleNotOwnerException.class));
     private final HttpStatusCode status;
     private final String code;
     private final String message;

@@ -69,4 +69,12 @@ public class JwtUtil {
     private DecodedJWT getDecodeJwt(String token) {
         return JWT.require(Algorithm.HMAC512(jwtProvider.getSecretKey())).build().verify(token);
     }
+
+    public boolean isOwner(String authorization, Long memberId) {
+        String accessToken = authorization.substring(7);
+        String username = getDecodeJwt(accessToken).getClaim("username").asString();
+        Member member = memberRepository.findByUsername(username).orElseThrow(MemberNotFoundException::new);
+
+        return member.getId().equals(memberId);
+    }
 }
