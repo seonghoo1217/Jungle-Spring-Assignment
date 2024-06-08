@@ -12,7 +12,10 @@ import swjungle.week13.assignment.global.dto.ResponseEnvelope;
 import swjungle.week13.assignment.presentation.dto.request.CreateArticleReq;
 import swjungle.week13.assignment.presentation.dto.request.PageReq;
 import swjungle.week13.assignment.presentation.dto.response.ArticleCreateRes;
+import swjungle.week13.assignment.presentation.dto.response.ArticleDetailRes;
 import swjungle.week13.assignment.presentation.dto.response.PageRes;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/articles")
@@ -34,4 +37,9 @@ public class ArticleController {
         return ResponseEnvelope.of(new PageRes<>(articles));
     }
 
+    @GetMapping("{uuid}")
+    public ResponseEnvelope<?> findArticleByUuid(@PathVariable("uuid") UUID uuid) {
+        ArticleDetailRes articleDetailRes = articleQueryService.findByUuid(uuid);
+        return ResponseEnvelope.of(articleDetailRes);
+    }
 }
