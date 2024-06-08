@@ -22,6 +22,7 @@ public class MemberQueryServiceImpl implements MemberQueryService {
     private final JwtUtil jwtUtil;
 
     @Override
+    @Transactional
     public SignupRes signin(String username, String password) {
         Member member = memberRepository.findByUsername(username).orElseThrow(MemberNotFoundException::new);
 
