@@ -11,7 +11,7 @@ import swjungle.week13.assignment.domain.Article;
 import swjungle.week13.assignment.global.dto.ResponseEnvelope;
 import swjungle.week13.assignment.presentation.dto.request.CreateArticleReq;
 import swjungle.week13.assignment.presentation.dto.request.PageReq;
-import swjungle.week13.assignment.presentation.dto.response.ArticleDetailRes;
+import swjungle.week13.assignment.presentation.dto.response.ArticleCreateRes;
 import swjungle.week13.assignment.presentation.dto.response.PageRes;
 
 @RestController
@@ -25,7 +25,7 @@ public class ArticleController {
     @PostMapping
     public ResponseEnvelope<?> createArticle(@Valid @RequestBody CreateArticleReq articleReq) {
         Article article = articleCommandService.createArticle(articleReq.title(), articleReq.contents(), articleReq.username());
-        return ResponseEnvelope.of(new ArticleDetailRes(article));
+        return ResponseEnvelope.of(new ArticleCreateRes(article));
     }
 
     @GetMapping
@@ -33,4 +33,5 @@ public class ArticleController {
         Page<ArticleDTO> articles = articleQueryService.findAllArticles(pageReq.page(), pageReq.size());
         return ResponseEnvelope.of(new PageRes<>(articles));
     }
+
 }
