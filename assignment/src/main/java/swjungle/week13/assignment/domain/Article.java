@@ -37,4 +37,8 @@ public class Article {
         this.articleEssential = articleEssential;
         this.member = member;
     }
+
+    public void modifyArticleEssential(String title, String contents) {
+        this.articleEssential = new ArticleEssential(title, contents);
+    }
 }

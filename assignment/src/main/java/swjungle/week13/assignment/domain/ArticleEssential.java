@@ -25,4 +25,9 @@ public class ArticleEssential {
         this.contents = contents;
         this.postDateTime = postDateTime;
     }
+
+    public ArticleEssential(String title, String contents) {
+        this.title = title;
+        this.contents = contents;
+    }
 }

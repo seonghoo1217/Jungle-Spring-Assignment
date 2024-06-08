@@ -10,6 +10,7 @@ import swjungle.week13.assignment.application.service.ArticleQueryService;
 import swjungle.week13.assignment.domain.Article;
 import swjungle.week13.assignment.global.dto.ResponseEnvelope;
 import swjungle.week13.assignment.presentation.dto.request.CreateArticleReq;
+import swjungle.week13.assignment.presentation.dto.request.ModifyArticleReq;
 import swjungle.week13.assignment.presentation.dto.request.PageReq;
 import swjungle.week13.assignment.presentation.dto.response.ArticleCreateRes;
 import swjungle.week13.assignment.presentation.dto.response.ArticleDetailRes;
@@ -41,5 +42,13 @@ public class ArticleController {
     public ResponseEnvelope<?> findArticleByUuid(@PathVariable("uuid") UUID uuid) {
         ArticleDetailRes articleDetailRes = articleQueryService.findByUuid(uuid);
         return ResponseEnvelope.of(articleDetailRes);
+    }
+
+    @PatchMapping
+    public ResponseEnvelope<?> modifyArticleEssential(@RequestBody ModifyArticleReq modifyArticleReq) {
+        ArticleDetailRes article = articleCommandService.modifyArticleEssential(modifyArticleReq.uuid(),
+                modifyArticleReq.title(), modifyArticleReq.contents());
+
+        return ResponseEnvelope.of(article);
     }
 }

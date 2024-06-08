@@ -7,9 +7,11 @@ import swjungle.week13.assignment.application.service.ArticleCommandService;
 import swjungle.week13.assignment.domain.Article;
 import swjungle.week13.assignment.domain.ArticleEssential;
 import swjungle.week13.assignment.domain.Member;
+import swjungle.week13.assignment.domain.exception.ArticleNotFoundException;
 import swjungle.week13.assignment.domain.exception.MemberNotFoundException;
 import swjungle.week13.assignment.domain.repo.ArticleRepository;
 import swjungle.week13.assignment.domain.repo.MemberRepository;
+import swjungle.week13.assignment.presentation.dto.response.ArticleDetailRes;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -28,5 +30,12 @@ public class ArticleCommandServiceImpl implements ArticleCommandService {
         Article article = new Article(UUID.randomUUID(), new ArticleEssential(title, contents, LocalDateTime.now()), member);
 
         return articleRepository.save(article);
+    }
+
+    @Override
+    public ArticleDetailRes modifyArticleEssential(UUID uuid, String title, String contents) {
+        Article article = articleRepository.findByUuid(uuid).orElseThrow(ArticleNotFoundException::new);
+        article.modifyArticleEssential(title, contents);
+        return new ArticleDetailRes(article);
     }
 }
