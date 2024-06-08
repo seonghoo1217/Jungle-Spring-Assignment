@@ -35,10 +35,11 @@ public class ArticleQueryServiceImpl implements ArticleQueryService {
                         article.articleEssential.contents,
                         article.member.username,
                         article.articleEssential.postDateTime,
-                        Projections.constructor(CommentDTO.class,
+                        Projections.list(Projections.constructor(CommentDTO.class,
                                 comment.uuid,
                                 comment.contents,
-                                comment.postDateTime)))
+                                comment.postDateTime))
+                ))
                 .from(article)
                 .leftJoin(article.comments, comment)
                 .orderBy(article.articleEssential.postDateTime.desc(), comment.postDateTime.desc())
