@@ -38,4 +38,10 @@ public class ArticleCommandServiceImpl implements ArticleCommandService {
         article.modifyArticleEssential(title, contents);
         return new ArticleDetailRes(article);
     }
+
+    @Override
+    public void deleteArticle(UUID uuid) {
+        Article article = articleRepository.findByUuid(uuid).orElseThrow(ArticleNotFoundException::new);
+        articleRepository.delete(article);
+    }
 }

@@ -51,4 +51,11 @@ public class ArticleController {
 
         return ResponseEnvelope.of(article);
     }
+
+    @DeleteMapping("{uuid}")
+    public ResponseEnvelope<?> deleteArticle(@PathVariable("uuid") UUID uuid) {
+        articleCommandService.deleteArticle(uuid);
+
+        return ResponseEnvelope.of("");
+    }
 }

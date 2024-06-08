@@ -10,4 +10,6 @@ public interface ArticleRepository extends Repository<Article, Long> {
     Article save(Article article);
 
     Optional<Article> findByUuid(UUID uuid);
+
+    void delete(Article article);
 }

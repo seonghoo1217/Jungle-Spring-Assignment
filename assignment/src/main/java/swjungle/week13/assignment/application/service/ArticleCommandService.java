@@ -9,4 +9,6 @@ public interface ArticleCommandService {
     Article createArticle(String title, String contents, String username);
 
     ArticleDetailRes modifyArticleEssential(UUID uuid, String title, String contents);
+
+    void deleteArticle(UUID uuid);
 }
