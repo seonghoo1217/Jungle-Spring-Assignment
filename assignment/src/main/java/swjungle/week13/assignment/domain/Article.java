@@ -28,6 +28,17 @@ public class Article {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "article",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
+
+
+    public Article(UUID uuid, ArticleEssential articleEssential, Member member) {
+        this.uuid = uuid;
+        this.articleEssential = articleEssential;
+        this.member = member;
+    }
+
+    public void modifyArticleEssential(String title, String contents) {
+        this.articleEssential = new ArticleEssential(title, contents);
+    }
 }
