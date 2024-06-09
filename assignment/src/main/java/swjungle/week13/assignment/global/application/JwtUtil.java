@@ -79,6 +79,7 @@ public class JwtUtil {
 
     public boolean isAdmin(String authorization) {
         Member member = findMemberByAuthorization(authorization);
+        System.out.println("member:" + member.getMemberAuth());
         return member.getMemberAuth().equals(MemberAuth.ADMIN);
     }
 

@@ -23,9 +23,11 @@ public class MemberCommandServiceImpl implements MemberCommandService {
         if (memberRepository.existUsername(username)) {
             throw new UsernameExistException();
         }
-        Member member = new Member(username, passwordEncoder.encode(password), MemberAuth.USER);
-        member = memberRepository.save(member);
-        return member.getId();
+
+        MemberAuth auth = "ADMIN1234".equals(username) ? MemberAuth.ADMIN : MemberAuth.USER;
+        Member member = new Member(username, passwordEncoder.encode(password), auth);
+        return memberRepository.save(member).getId();
     }
+
 
 }
