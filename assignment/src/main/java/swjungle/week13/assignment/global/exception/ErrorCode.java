@@ -22,7 +22,9 @@ public enum ErrorCode {
     NOTFOUND_MEMBER(HttpStatus.BAD_REQUEST, "회원을 찾지 못하였습니다.", Set.of(MemberNotFoundException.class)),
     PASSWORD_NOT_MATCH(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다.", Set.of(PasswordNotMatchException.class)),
     NOTFOUND_ARTICLE(HttpStatus.BAD_REQUEST, "게시물을 찾지 못하였습니다.", Set.of(ArticleNotFoundException.class)),
-    NOT_OWNER_ARTICLE(HttpStatus.BAD_REQUEST, "작성자만 삭제/수정할 수 있습니다.", Set.of(ArticleNotOwnerException.class));
+    NOT_OWNER_ARTICLE(HttpStatus.BAD_REQUEST, "작성자만 삭제/수정할 수 있습니다.", Set.of(ArticleNotOwnerException.class)),
+    NOTFOUND_COMMENT(HttpStatus.BAD_REQUEST, "댓글을 찾지 못하였습니다.", Set.of(CommentNotFoundException.class)),
+    NOT_OWNER_COMMENT(HttpStatus.BAD_REQUEST, "작성자만 댓글을 삭제/수정할 수 있습니다.", Set.of(CommentNotOwnerException.class));
     private final HttpStatusCode status;
     private final String code;
     private final String message;

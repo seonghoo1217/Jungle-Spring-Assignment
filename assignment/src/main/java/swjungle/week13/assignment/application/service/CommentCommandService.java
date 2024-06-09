@@ -6,4 +6,6 @@ import java.util.UUID;
 
 public interface CommentCommandService {
     Comment applyCommentToArticle(UUID uuid, String contents, String authorization);
+
+    Comment modifyComment(UUID commentUuid, String contents, String authorization);
 }

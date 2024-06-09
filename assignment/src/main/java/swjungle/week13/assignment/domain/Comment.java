@@ -40,4 +40,8 @@ public class Comment {
         this.article = article;
         this.member = member;
     }
+
+    public void modifyComment(String contents) {
+        this.contents = contents;
+    }
 }

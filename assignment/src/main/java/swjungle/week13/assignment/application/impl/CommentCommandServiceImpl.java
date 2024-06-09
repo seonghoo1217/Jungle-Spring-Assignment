@@ -8,6 +8,8 @@ import swjungle.week13.assignment.domain.Article;
 import swjungle.week13.assignment.domain.Comment;
 import swjungle.week13.assignment.domain.Member;
 import swjungle.week13.assignment.domain.exception.ArticleNotFoundException;
+import swjungle.week13.assignment.domain.exception.CommentNotFoundException;
+import swjungle.week13.assignment.domain.exception.CommentNotOwnerException;
 import swjungle.week13.assignment.domain.exception.MemberNotFoundException;
 import swjungle.week13.assignment.domain.repo.ArticleRepository;
 import swjungle.week13.assignment.domain.repo.CommentRepository;
@@ -38,6 +40,21 @@ public class CommentCommandServiceImpl implements CommentCommandService {
 
         Comment comment = new Comment(UUID.randomUUID(), contents, LocalDateTime.now(), article, member);
         commentRepository.save(comment);
+        return comment;
+    }
+
+    @Override
+    public Comment modifyComment(UUID commentUuid, String contents, String authorization) {
+        String username = jwtUtil.getUsernameByClaim(authorization);
+
+        Member member = memberRepository.findByUsername(username).orElseThrow(MemberNotFoundException::new);
+        Comment comment = commentRepository.findByUuid(commentUuid).orElseThrow(CommentNotFoundException::new);
+
+        if (jwtUtil.isOwner(authorization, member.getId())) {
+            throw new CommentNotOwnerException();
+        }
+
+        comment.modifyComment(contents);
         return comment;
     }
 }
