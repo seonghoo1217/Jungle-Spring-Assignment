@@ -1,10 +1,8 @@
 package swjungle.week13.assignment.application.impl;
 
-import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,8 +10,6 @@ import swjungle.week13.assignment.application.dto.ArticleDTO;
 import swjungle.week13.assignment.application.dto.CommentDTO;
 import swjungle.week13.assignment.application.service.ArticleQueryService;
 import swjungle.week13.assignment.domain.Article;
-import swjungle.week13.assignment.domain.QArticle;
-import swjungle.week13.assignment.domain.QComment;
 import swjungle.week13.assignment.domain.exception.ArticleNotFoundException;
 import swjungle.week13.assignment.domain.repo.ArticleRepository;
 import swjungle.week13.assignment.global.dto.CustomPageable;
@@ -21,6 +17,7 @@ import swjungle.week13.assignment.presentation.dto.response.ArticleDetailRes;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -31,35 +28,19 @@ public class ArticleQueryServiceImpl implements ArticleQueryService {
 
     @Override
     public Page<ArticleDTO> findAllArticles(int page, int size) {
-        QArticle article = QArticle.article;
-        QComment comment = QComment.comment;
+//        QArticle article = QArticle.article;
+//        QComment comment = QComment.comment;
         Pageable pageable = CustomPageable.of(page, size);
-        List<ArticleDTO> content = jpaQueryFactory
-                .select(Projections.constructor(ArticleDTO.class,
-                        article.uuid,
-                        article.articleEssential.title,
-                        article.articleEssential.contents,
-                        article.member.username,
-                        article.articleEssential.postDateTime,
-                        Projections.list(Projections.constructor(CommentDTO.class,
-                                comment.uuid,
-                                comment.contents,
-                                comment.postDateTime,
-                                comment.member.username))
-                ))
-                .from(article)
-                .leftJoin(article.comments, comment)
-                .orderBy(article.articleEssential.postDateTime.desc(), comment.postDateTime.desc())
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetch();
+        Page<Article> articles = articleRepository.findAll(pageable);
 
-        long totalCount = jpaQueryFactory
-                .select(article.count())
-                .from(article)
-                .fetchOne();
-        return new PageImpl<>(content, pageable, totalCount);
+        return articles.map(article -> {
+            List<CommentDTO> comments = article.getComments().stream()
+                    .map(CommentDTO::new)
+                    .collect(Collectors.toList());
+            return new ArticleDTO(article, comments);
+        });
     }
+
 
     @Override
     public ArticleDetailRes findByUuid(UUID uuid) {

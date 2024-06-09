@@ -23,7 +23,7 @@ public record ArticleDetailRes(UUID uuid, String title, String contents, String 
 
     private static List<CommentDTO> convertCommentEntityToDTO(List<Comment> comments) {
         return comments.stream()
-                .map(c -> new CommentDTO(c.getUuid(), c.getContents(), c.getPostDateTime(), c.getMember().getUsername()))
+                .map(c -> new CommentDTO(c.getUuid(), c.getContents(), c.getPostDateTime(), c.getMember().getUsername(), c.getArticle().getUuid()))
                 .toList();
     }
 }

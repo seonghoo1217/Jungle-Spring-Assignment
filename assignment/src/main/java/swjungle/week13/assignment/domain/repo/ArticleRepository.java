@@ -1,5 +1,7 @@
 package swjungle.week13.assignment.domain.repo;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.Repository;
 import swjungle.week13.assignment.domain.Article;
 
@@ -12,4 +14,6 @@ public interface ArticleRepository extends Repository<Article, Long> {
     Optional<Article> findByUuid(UUID uuid);
 
     void delete(Article article);
+
+    Page<Article> findAll(Pageable pageable);
 }
