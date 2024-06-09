@@ -71,10 +71,14 @@ public class JwtUtil {
     }
 
     public boolean isOwner(String authorization, Long memberId) {
-        String accessToken = authorization.substring(7);
-        String username = getDecodeJwt(accessToken).getClaim("username").asString();
+        String username = getUsernameByClaim(authorization);
         Member member = memberRepository.findByUsername(username).orElseThrow(MemberNotFoundException::new);
 
         return member.getId().equals(memberId);
+    }
+
+    public String getUsernameByClaim(String authorization) {
+        String accessToken = authorization.substring(7);
+        return getDecodeJwt(accessToken).getClaim("username").asString();
     }
 }
