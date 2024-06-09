@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -38,7 +39,7 @@ public class Article {
         this.member = member;
     }
 
-    public void modifyArticleEssential(String title, String contents) {
-        this.articleEssential = new ArticleEssential(title, contents);
+    public void modifyArticleEssential(String title, String contents, LocalDateTime postDateTime) {
+        this.articleEssential = new ArticleEssential(title, contents, postDateTime);
     }
 }
