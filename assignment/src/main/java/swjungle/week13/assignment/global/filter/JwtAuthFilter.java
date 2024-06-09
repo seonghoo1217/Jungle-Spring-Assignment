@@ -28,6 +28,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             "/members/signup", "/members/signin", "/ping"
     );
 
+    private static final List<String> AUTHENTICATE_GUEST = List.of(
+            "/articles", "/articles/**"
+    );
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         System.out.println("REQUEST-URI:" + request.getRequestURI());
@@ -35,6 +39,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
+
+        if (request.getRequestURI().contains("/articles") && request.getMethod().equals("GET")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String authorization = request.getHeader("Authorization");
         String authorizationRefresh = request.getHeader("Authorization_Refresh");
         if (authorizationRefresh != null) {
@@ -69,5 +79,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     private boolean isAuthorizationCorrect(String accessToken) {
         return accessToken != null && !accessToken.trim().isEmpty();
+    }
+
+    private boolean isUUID(String url) {
+        String UUID = url.substring(10);
+        return UUID.matches("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$");
     }
 }
