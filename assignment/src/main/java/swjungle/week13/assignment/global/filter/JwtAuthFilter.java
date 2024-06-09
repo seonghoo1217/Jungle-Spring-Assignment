@@ -80,9 +80,4 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private boolean isAuthorizationCorrect(String accessToken) {
         return accessToken != null && !accessToken.trim().isEmpty();
     }
-
-    private boolean isUUID(String url) {
-        String UUID = url.substring(10);
-        return UUID.matches("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$");
-    }
 }
