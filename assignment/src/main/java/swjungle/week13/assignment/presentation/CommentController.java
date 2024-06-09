@@ -38,7 +38,8 @@ public class CommentController {
     @DeleteMapping("{uuid}")
     public ResponseEnvelope<?> deleteComment(@PathVariable("uuid") UUID uuid, HttpServletRequest servletRequest) {
         String authorization = servletRequest.getHeader("Authorization");
-
+        commentCommandService.deleteComment(uuid, authorization);
+        return ResponseEnvelope.of("");
     }
 
 }
