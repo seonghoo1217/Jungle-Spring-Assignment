@@ -6,6 +6,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import swjungle.week13.assignment.domain.Member;
+import swjungle.week13.assignment.domain.MemberAuth;
 import swjungle.week13.assignment.domain.exception.MemberNotFoundException;
 import swjungle.week13.assignment.domain.repo.MemberRepository;
 import swjungle.week13.assignment.global.application.dto.ReissueToken;
@@ -71,14 +72,24 @@ public class JwtUtil {
     }
 
     public boolean isOwner(String authorization, Long memberId) {
-        String username = getUsernameByClaim(authorization);
-        Member member = memberRepository.findByUsername(username).orElseThrow(MemberNotFoundException::new);
+        Member member = findMemberByAuthorization(authorization);
 
         return member.getId().equals(memberId);
+    }
+
+    public boolean isAdmin(String authorization) {
+        Member member = findMemberByAuthorization(authorization);
+        System.out.println("member:" + member.getMemberAuth());
+        return member.getMemberAuth().equals(MemberAuth.ADMIN);
     }
 
     public String getUsernameByClaim(String authorization) {
         String accessToken = authorization.substring(7);
         return getDecodeJwt(accessToken).getClaim("username").asString();
+    }
+
+    private Member findMemberByAuthorization(String authorization) {
+        String username = getUsernameByClaim(authorization);
+        return memberRepository.findByUsername(username).orElseThrow(MemberNotFoundException::new);
     }
 }

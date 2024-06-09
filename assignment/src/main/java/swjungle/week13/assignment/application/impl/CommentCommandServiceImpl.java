@@ -45,25 +45,26 @@ public class CommentCommandServiceImpl implements CommentCommandService {
 
     @Override
     public Comment modifyComment(UUID commentUuid, String contents, String authorization) {
-        String username = jwtUtil.getUsernameByClaim(authorization);
-
-        Member member = memberRepository.findByUsername(username).orElseThrow(MemberNotFoundException::new);
-        Comment comment = commentRepository.findByUuid(commentUuid).orElseThrow(CommentNotFoundException::new);
-
-        if (jwtUtil.isOwner(authorization, member.getId())) {
-            throw new CommentNotOwnerException();
-        }
-
+        Comment comment = getCommentAndCheckOwnership(commentUuid, authorization);
         comment.modifyComment(contents);
         return comment;
     }
 
     @Override
     public void deleteComment(UUID commentUuid, String authorization) {
-        String username = jwtUtil.getUsernameByClaim(authorization);
+        Comment comment = getCommentAndCheckOwnership(commentUuid, authorization);
+        commentRepository.delete(comment);
+    }
 
+    private Comment getCommentAndCheckOwnership(UUID commentUuid, String authorization) {
+        String username = jwtUtil.getUsernameByClaim(authorization);
         Member member = memberRepository.findByUsername(username).orElseThrow(MemberNotFoundException::new);
         Comment comment = commentRepository.findByUuid(commentUuid).orElseThrow(CommentNotFoundException::new);
-        commentRepository.deleteComment(comment);
+
+        if (!jwtUtil.isOwner(authorization, member.getId()) && !jwtUtil.isAdmin(authorization)) {
+            throw new CommentNotOwnerException();
+        }
+
+        return comment;
     }
 }

@@ -1,5 +1,6 @@
 package swjungle.week13.assignment.global.exception;
 
+import com.auth0.jwt.exceptions.JWTDecodeException;
 import jakarta.validation.ConstraintViolationException;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,9 @@ public enum ErrorCode {
     NOTFOUND_ARTICLE(HttpStatus.BAD_REQUEST, "게시물을 찾지 못하였습니다.", Set.of(ArticleNotFoundException.class)),
     NOT_OWNER_ARTICLE(HttpStatus.BAD_REQUEST, "작성자만 삭제/수정할 수 있습니다.", Set.of(ArticleNotOwnerException.class)),
     NOTFOUND_COMMENT(HttpStatus.BAD_REQUEST, "댓글을 찾지 못하였습니다.", Set.of(CommentNotFoundException.class)),
-    NOT_OWNER_COMMENT(HttpStatus.BAD_REQUEST, "작성자만 댓글을 삭제/수정할 수 있습니다.", Set.of(CommentNotOwnerException.class));
+    NOT_OWNER_COMMENT(HttpStatus.BAD_REQUEST, "작성자만 댓글을 삭제/수정할 수 있습니다.", Set.of(CommentNotOwnerException.class)),
+    TOKEN_INVALID(HttpStatus.BAD_REQUEST, "토큰이 유효하지 않습니다.", Set.of(TokenInvalidException.class)),
+    TOKEN_INVALID_PARSING(HttpStatus.BAD_REQUEST, "토큰이 유효하지 않습니다.", Set.of(JWTDecodeException.class));;
     private final HttpStatusCode status;
     private final String code;
     private final String message;

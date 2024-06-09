@@ -12,6 +12,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import swjungle.week13.assignment.global.application.CustomUserDetailService;
 import swjungle.week13.assignment.global.application.JwtUtil;
 import swjungle.week13.assignment.global.application.dto.ReissueToken;
+import swjungle.week13.assignment.global.exception.TokenInvalidException;
 
 import java.io.IOException;
 import java.util.List;
@@ -27,6 +28,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             "/members/signup", "/members/signin", "/ping"
     );
 
+    private static final List<String> AUTHENTICATE_GUEST = List.of(
+            "/articles", "/articles/**"
+    );
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         System.out.println("REQUEST-URI:" + request.getRequestURI());
@@ -34,6 +39,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
+
+        if (request.getRequestURI().contains("/articles") && request.getMethod().equals("GET")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String authorization = request.getHeader("Authorization");
         String authorizationRefresh = request.getHeader("Authorization_Refresh");
         if (authorizationRefresh != null) {
@@ -43,7 +54,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
         if (authorization != null && authorization.startsWith("Bearer ")) {
             String accessToken = eliminatePrefixBearer(authorization);
-
+            if (!isAuthorizationCorrect(accessToken)) {
+                throw new TokenInvalidException();
+            }
             if (jwtUtil.isValidateToken(accessToken)) {
                 String username = jwtUtil.getClaimUsername(accessToken);
 
@@ -62,5 +75,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     private String eliminatePrefixBearer(String authorizationToken) {
         return authorizationToken.substring(7);
+    }
+
+    private boolean isAuthorizationCorrect(String accessToken) {
+        return accessToken != null && !accessToken.trim().isEmpty();
+    }
+
+    private boolean isUUID(String url) {
+        String UUID = url.substring(10);
+        return UUID.matches("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$");
     }
 }
