@@ -32,4 +32,16 @@ public class Comment {
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
+
+    public Comment(UUID uuid, String contents, LocalDateTime postDateTime, Article article, Member member) {
+        this.uuid = uuid;
+        this.contents = contents;
+        this.postDateTime = postDateTime;
+        this.article = article;
+        this.member = member;
+    }
+
+    public void modifyComment(String contents) {
+        this.contents = contents;
+    }
 }
