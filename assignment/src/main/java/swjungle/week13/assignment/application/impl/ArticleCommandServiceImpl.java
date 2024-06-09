@@ -38,7 +38,7 @@ public class ArticleCommandServiceImpl implements ArticleCommandService {
     @Override
     public ArticleDetailRes modifyArticleEssential(String authorization, UUID uuid, String title, String contents) {
         Article article = articleRepository.findByUuid(uuid).orElseThrow(ArticleNotFoundException::new);
-        if (!jwtUtil.isOwner(authorization, article.getMember().getId())) {
+        if (!jwtUtil.isOwner(authorization, article.getMember().getId()) || !jwtUtil.isAdmin(authorization)) {
             throw new ArticleNotOwnerException();
         }
         article.modifyArticleEssential(title, contents);
@@ -48,7 +48,7 @@ public class ArticleCommandServiceImpl implements ArticleCommandService {
     @Override
     public void deleteArticle(String authorization, UUID uuid) {
         Article article = articleRepository.findByUuid(uuid).orElseThrow(ArticleNotFoundException::new);
-        if (!jwtUtil.isOwner(authorization, article.getMember().getId())) {
+        if (!jwtUtil.isOwner(authorization, article.getMember().getId()) || !jwtUtil.isAdmin(authorization)) {
             throw new ArticleNotOwnerException();
         }
         articleRepository.delete(article);

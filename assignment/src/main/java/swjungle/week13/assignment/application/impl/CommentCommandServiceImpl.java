@@ -50,7 +50,7 @@ public class CommentCommandServiceImpl implements CommentCommandService {
         Member member = memberRepository.findByUsername(username).orElseThrow(MemberNotFoundException::new);
         Comment comment = commentRepository.findByUuid(commentUuid).orElseThrow(CommentNotFoundException::new);
 
-        if (jwtUtil.isOwner(authorization, member.getId())) {
+        if (!jwtUtil.isOwner(authorization, member.getId()) || !jwtUtil.isAdmin(authorization)) {
             throw new CommentNotOwnerException();
         }
 
@@ -64,6 +64,11 @@ public class CommentCommandServiceImpl implements CommentCommandService {
 
         Member member = memberRepository.findByUsername(username).orElseThrow(MemberNotFoundException::new);
         Comment comment = commentRepository.findByUuid(commentUuid).orElseThrow(CommentNotFoundException::new);
+
+        if (!jwtUtil.isOwner(authorization, member.getId()) || !jwtUtil.isAdmin(authorization)) {
+            throw new CommentNotOwnerException();
+        }
+
         commentRepository.delete(comment);
     }
 }
