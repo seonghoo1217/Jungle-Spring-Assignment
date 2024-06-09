@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 @Component
 @Getter
 public class JwtProvider {
-    @Value("${jwt.secret.key}")
     private String secretKey;
 
     @Value("${jwt.access.expiration}")
@@ -22,4 +21,7 @@ public class JwtProvider {
     @Value("${jwt.refresh.header}")
     private String refresh_header;
 
+    public void generateSecretKey(String secretKey) {
+        this.secretKey = secretKey;
+    }
 }
