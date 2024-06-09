@@ -64,6 +64,6 @@ public class CommentCommandServiceImpl implements CommentCommandService {
 
         Member member = memberRepository.findByUsername(username).orElseThrow(MemberNotFoundException::new);
         Comment comment = commentRepository.findByUuid(commentUuid).orElseThrow(CommentNotFoundException::new);
-        commentRepository.deleteComment(comment);
+        commentRepository.delete(comment);
     }
 }

@@ -11,5 +11,5 @@ public interface CommentRepository extends Repository<Comment, Long> {
 
     Optional<Comment> findByUuid(UUID uuid);
 
-    void deleteComment(Comment comment);
+    void delete(Comment comment);
 }
