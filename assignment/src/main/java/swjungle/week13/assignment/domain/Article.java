@@ -28,7 +28,7 @@ public class Article {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "article", cascade = CascadeType.PERSIST)
     private List<Comment> comments = new ArrayList<>();
 
 
