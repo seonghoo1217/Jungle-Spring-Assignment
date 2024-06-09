@@ -8,4 +8,6 @@ public interface CommentCommandService {
     Comment applyCommentToArticle(UUID uuid, String contents, String authorization);
 
     Comment modifyComment(UUID commentUuid, String contents, String authorization);
+
+    void deleteComment(UUID commentUuid, String authorization);
 }

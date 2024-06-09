@@ -10,4 +10,6 @@ public interface CommentRepository extends Repository<Comment, Long> {
     Comment save(Comment comment);
 
     Optional<Comment> findByUuid(UUID uuid);
+
+    void deleteComment(Comment comment);
 }

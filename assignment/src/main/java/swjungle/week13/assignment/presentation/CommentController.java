@@ -11,6 +11,8 @@ import swjungle.week13.assignment.presentation.dto.request.CreateCommentReq;
 import swjungle.week13.assignment.presentation.dto.request.ModifyCommentReq;
 import swjungle.week13.assignment.presentation.dto.response.CommentDetailRes;
 
+import java.util.UUID;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("comments")
@@ -31,7 +33,11 @@ public class CommentController {
         Comment comment = commentCommandService.modifyComment(modifyCommentReq.commentUuid(), modifyCommentReq.contents(), authorization);
 
         return ResponseEnvelope.of(new CommentDetailRes(comment));
+    }
 
+    @DeleteMapping("{uuid}")
+    public ResponseEnvelope<?> deleteComment(@PathVariable("uuid") UUID uuid, HttpServletRequest servletRequest) {
+        String authorization = servletRequest.getHeader("Authorization");
 
     }
 

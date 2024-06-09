@@ -57,4 +57,13 @@ public class CommentCommandServiceImpl implements CommentCommandService {
         comment.modifyComment(contents);
         return comment;
     }
+
+    @Override
+    public void deleteComment(UUID commentUuid, String authorization) {
+        String username = jwtUtil.getUsernameByClaim(authorization);
+
+        Member member = memberRepository.findByUsername(username).orElseThrow(MemberNotFoundException::new);
+        Comment comment = commentRepository.findByUuid(commentUuid).orElseThrow(CommentNotFoundException::new);
+        commentRepository.deleteComment(comment);
+    }
 }
