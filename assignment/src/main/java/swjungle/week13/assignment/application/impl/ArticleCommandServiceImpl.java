@@ -41,7 +41,7 @@ public class ArticleCommandServiceImpl implements ArticleCommandService {
         if (!jwtUtil.isOwner(authorization, article.getMember().getId()) && !jwtUtil.isAdmin(authorization)) {
             throw new ArticleNotOwnerException();
         }
-        article.modifyArticleEssential(title, contents);
+        article.modifyArticleEssential(title, contents, article.getArticleEssential().getPostDateTime());
         return new ArticleDetailRes(article);
     }
 
