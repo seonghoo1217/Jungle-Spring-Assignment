@@ -45,7 +45,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             return;
         }
 
-        if (request.getRequestURI().contains("/articles") && request.getMethod().equals("GET")) {
+        if (request.getRequestURI().equals("/articles") && request.getMethod().equals("GET")) {
             filterChain.doFilter(request, response);
             return;
         }

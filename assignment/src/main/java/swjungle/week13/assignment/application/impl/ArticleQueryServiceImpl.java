@@ -4,6 +4,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import swjungle.week13.assignment.application.dto.ArticleDTO;
@@ -30,7 +31,7 @@ public class ArticleQueryServiceImpl implements ArticleQueryService {
     public Page<ArticleDTO> findAllArticles(int page, int size) {
 //        QArticle article = QArticle.article;
 //        QComment comment = QComment.comment;
-        Pageable pageable = CustomPageable.of(page, size);
+        Pageable pageable = CustomPageable.of(page, size, Sort.by("articleEssential.postDateTime").descending());
         Page<Article> articles = articleRepository.findAll(pageable);
 
         return articles.map(article -> {

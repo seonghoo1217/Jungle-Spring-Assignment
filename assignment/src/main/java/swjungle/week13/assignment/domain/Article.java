@@ -26,6 +26,7 @@ public class Article {
     private ArticleEssential articleEssential;
 
     @OneToMany(mappedBy = "article", cascade = CascadeType.PERSIST)
+    @OrderBy("postDateTime DESC")
     private List<Comment> comments = new ArrayList<>();
 
     public Article(UUID uuid, ArticleEssential articleEssential) {

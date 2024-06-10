@@ -23,6 +23,7 @@ public class JwtUtil {
     private final MemberRepository memberRepository;
 
     public String createAccessToken(Member member) {
+        System.out.println("JWT ACCESS:" + jwtProvider.getAccess_expiration());
         return createToken(member, jwtProvider.getAccess_expiration());
     }
 
