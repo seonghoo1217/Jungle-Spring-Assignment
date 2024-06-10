@@ -28,9 +28,11 @@ public class ArticleCommandServiceImpl implements ArticleCommandService {
     private final JwtUtil jwtUtil;
 
     @Override
-    public Article createArticle(String title, String contents, String username) {
+    public Article createArticle(String title, String contents, String authorization) {
+        String username = jwtUtil.getUsernameByClaim(authorization);
         Member member = memberRepository.findByUsername(username).orElseThrow(MemberNotFoundException::new);
-        Article article = new Article(UUID.randomUUID(), new ArticleEssential(title, contents, LocalDateTime.now()), member);
+
+        Article article = new Article(UUID.randomUUID(), new ArticleEssential(title, contents, LocalDateTime.now(), member.getUsername()));
 
         return articleRepository.save(article);
     }
@@ -38,19 +40,29 @@ public class ArticleCommandServiceImpl implements ArticleCommandService {
     @Override
     public ArticleDetailRes modifyArticleEssential(String authorization, UUID uuid, String title, String contents) {
         Article article = articleRepository.findByUuid(uuid).orElseThrow(ArticleNotFoundException::new);
-        if (!jwtUtil.isOwner(authorization, article.getMember().getId()) && !jwtUtil.isAdmin(authorization)) {
+        Member member = memberRepository.findByUsername(article.getArticleEssential().getAuthor()).orElseThrow(MemberNotFoundException::new);
+
+        if (!jwtUtil.isOwner(authorization, member.getId()) && !jwtUtil.isAdmin(authorization)) {
             throw new ArticleNotOwnerException();
         }
-        article.modifyArticleEssential(title, contents, article.getArticleEssential().getPostDateTime());
+        article.modifyArticleEssential(title,
+                contents,
+                article.getArticleEssential().getPostDateTime(),
+                article.getArticleEssential().getAuthor()
+        );
+
         return new ArticleDetailRes(article);
     }
 
     @Override
     public void deleteArticle(String authorization, UUID uuid) {
         Article article = articleRepository.findByUuid(uuid).orElseThrow(ArticleNotFoundException::new);
-        if (!jwtUtil.isOwner(authorization, article.getMember().getId()) && !jwtUtil.isAdmin(authorization)) {
+        Member member = memberRepository.findByUsername(article.getArticleEssential().getAuthor()).orElseThrow(MemberNotFoundException::new);
+
+        if (!jwtUtil.isOwner(authorization, member.getId()) && !jwtUtil.isAdmin(authorization)) {
             throw new ArticleNotOwnerException();
         }
+
         articleRepository.delete(article);
     }
 }

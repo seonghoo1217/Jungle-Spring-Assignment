@@ -10,7 +10,7 @@ public record ArticleCreateRes(UUID uuid, String title, String contents, String 
         this(article.getUuid(),
                 article.getArticleEssential().getTitle(),
                 article.getArticleEssential().getContents(),
-                article.getMember().getUsername(),
+                article.getArticleEssential().getAuthor(),
                 article.getArticleEssential().getPostDateTime());
     }
 }

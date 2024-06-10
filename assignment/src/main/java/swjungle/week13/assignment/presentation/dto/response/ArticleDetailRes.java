@@ -15,7 +15,7 @@ public record ArticleDetailRes(UUID uuid, String title, String contents, String 
                 article.getUuid(),
                 article.getArticleEssential().getTitle(),
                 article.getArticleEssential().getContents(),
-                article.getMember().getUsername(),
+                article.getArticleEssential().getAuthor(),
                 article.getArticleEssential().getPostDateTime(),
                 convertCommentEntityToDTO(article.getComments())
         );

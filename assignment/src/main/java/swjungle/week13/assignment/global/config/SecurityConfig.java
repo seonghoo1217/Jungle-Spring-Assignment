@@ -1,5 +1,6 @@
 package swjungle.week13.assignment.global.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +26,7 @@ public class SecurityConfig {
     private final JwtAuthenticateDeniedHandler jwtAuthenticateDeniedHandler;
     private final JwtUtil jwtUtil;
     private final CustomUserDetailService customUserDetailService;
+    private final ObjectMapper objectMapper;
 
     private static final String[] AUTHENTICATE_WHITELIST = {
             "/members/signup", "members/signin", "/ping"
@@ -45,7 +47,7 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.GET, "/articles").permitAll()
                     .anyRequest().authenticated();
         });
-        http.addFilterBefore(new JwtAuthFilter(customUserDetailService, jwtUtil), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new JwtAuthFilter(customUserDetailService, jwtUtil, objectMapper), UsernamePasswordAuthenticationFilter.class);
         http.exceptionHandling(exceptionHandle -> {
             exceptionHandle.accessDeniedHandler(jwtAccessDeniedHandler);
             exceptionHandle.authenticationEntryPoint(jwtAuthenticateDeniedHandler);

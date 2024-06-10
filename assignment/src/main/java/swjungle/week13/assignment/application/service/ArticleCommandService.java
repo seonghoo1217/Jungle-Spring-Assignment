@@ -6,7 +6,7 @@ import swjungle.week13.assignment.presentation.dto.response.ArticleDetailRes;
 import java.util.UUID;
 
 public interface ArticleCommandService {
-    Article createArticle(String title, String contents, String username);
+    Article createArticle(String title, String contents, String authorization);
 
     ArticleDetailRes modifyArticleEssential(String authorization, UUID uuid, String title, String contents);
 
