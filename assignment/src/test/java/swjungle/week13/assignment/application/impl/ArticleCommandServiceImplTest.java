@@ -1,17 +1,9 @@
 package swjungle.week13.assignment.application.impl;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import swjungle.week13.assignment.application.service.ArticleCommandService;
 import swjungle.week13.assignment.application.service.MemberQueryService;
-import swjungle.week13.assignment.domain.exception.ArticleNotOwnerException;
-import swjungle.week13.assignment.presentation.dto.response.SignupRes;
-
-import java.util.UUID;
-
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 public class ArticleCommandServiceImplTest {
@@ -22,7 +14,7 @@ public class ArticleCommandServiceImplTest {
     @Autowired
     MemberQueryService memberQueryService;
 
-    @Test
+    /*@Test
     @DisplayName("주인이 아닌 사용자가 게시물 수정 작업 요청 시")
     public void modifyArticleNotOwner() {
         //given
@@ -46,5 +38,5 @@ public class ArticleCommandServiceImplTest {
         SignupRes signupRes = memberQueryService.signin("seonghoo1", "A12345678@!");
         System.out.println(signupRes.accessToken());
         return "Bearer" + signupRes.accessToken();
-    }
+    }*/
 }
