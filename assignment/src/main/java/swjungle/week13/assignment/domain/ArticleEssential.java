@@ -20,10 +20,13 @@ public class ArticleEssential {
 
     private LocalDateTime postDateTime;
 
-    public ArticleEssential(String title, String contents, LocalDateTime postDateTime) {
+    private String author;
+
+    public ArticleEssential(String title, String contents, LocalDateTime postDateTime, String author) {
         this.title = title;
         this.contents = contents;
         this.postDateTime = postDateTime;
+        this.author = author;
     }
 
     public ArticleEssential(String title, String contents) {

@@ -28,8 +28,9 @@ public class ArticleController {
     private final ArticleQueryService articleQueryService;
 
     @PostMapping
-    public ResponseEnvelope<?> createArticle(@Valid @RequestBody CreateArticleReq articleReq) {
-        Article article = articleCommandService.createArticle(articleReq.title(), articleReq.contents(), articleReq.username());
+    public ResponseEnvelope<?> createArticle(@Valid @RequestBody CreateArticleReq articleReq, HttpServletRequest httpServletRequest) {
+        String authorization = httpServletRequest.getHeader("Authorization");
+        Article article = articleCommandService.createArticle(articleReq.title(), articleReq.contents(), authorization);
         return ResponseEnvelope.of(new ArticleCreateRes(article));
     }
 

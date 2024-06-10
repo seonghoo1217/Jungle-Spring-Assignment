@@ -25,21 +25,16 @@ public class Article {
 
     private ArticleEssential articleEssential;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id")
-    private Member member;
-
     @OneToMany(mappedBy = "article", cascade = CascadeType.PERSIST)
+    @OrderBy("postDateTime DESC")
     private List<Comment> comments = new ArrayList<>();
 
-
-    public Article(UUID uuid, ArticleEssential articleEssential, Member member) {
+    public Article(UUID uuid, ArticleEssential articleEssential) {
         this.uuid = uuid;
         this.articleEssential = articleEssential;
-        this.member = member;
     }
 
-    public void modifyArticleEssential(String title, String contents, LocalDateTime postDateTime) {
-        this.articleEssential = new ArticleEssential(title, contents, postDateTime);
+    public void modifyArticleEssential(String title, String contents, LocalDateTime postDateTime, String author) {
+        this.articleEssential = new ArticleEssential(title, contents, postDateTime, author);
     }
 }
